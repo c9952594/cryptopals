@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cryptopals.Core
 {
-    public class Class1
+    interface IFilter
     {
     }
 }

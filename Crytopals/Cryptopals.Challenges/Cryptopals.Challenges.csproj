@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ADAE008B-330A-4DF9-813E-B56C2592C3B2}</ProjectGuid>
+    <ProjectGuid>{1BEEFE23-B377-4022-9997-88596EAA40EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cryptopals.Test</RootNamespace>
-    <AssemblyName>Cryptopals.Test</AssemblyName>
+    <RootNamespace>Cryptopals.Challenges</RootNamespace>
+    <AssemblyName>Cryptopals.Challenges</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -49,23 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base64Test.cs" />
-    <Compile Include="BufferTest.cs" />
-    <Compile Include="HexTest.cs" />
+    <Compile Include="Set001\Challenge003.cs" />
+    <Compile Include="Set001\Challenge002.cs" />
+    <Compile Include="Set001\Challenge001.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cryptopals.Core\Cryptopals.Core.csproj">
       <Project>{8B4D3138-CC59-4EBF-BCA4-805325E65BA1}</Project>
       <Name>Cryptopals.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

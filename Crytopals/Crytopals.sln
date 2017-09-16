@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Core", "Cryptopa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Test", "Cryptopals.Test\Cryptopals.Test.csproj", "{ADAE008B-330A-4DF9-813E-B56C2592C3B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Challenges", "Cryptopals.Challenges\Cryptopals.Challenges.csproj", "{1BEEFE23-B377-4022-9997-88596EAA40EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{ADAE008B-330A-4DF9-813E-B56C2592C3B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADAE008B-330A-4DF9-813E-B56C2592C3B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADAE008B-330A-4DF9-813E-B56C2592C3B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
