@@ -49,11 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base64Test.cs" />
-    <Compile Include="BufferTest.cs" />
-    <Compile Include="HexTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
