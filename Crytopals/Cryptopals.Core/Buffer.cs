@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Cryptopals.Core
 {
-    public class Buffer : IEnumerable<byte>
+    public class Buffer
     {
         readonly byte[] _value;
 
@@ -27,8 +29,6 @@ namespace Cryptopals.Core
         public static Buffer FromText(string text) => new Buffer(Encoding.ASCII.GetBytes(text));
         public string ToText() => Encoding.ASCII.GetString(_value);
 
-        public static Buffer FromByteArray(byte[] value) => new Buffer(value);
-
 
         public Tuple<int,string> Score(Func<string, int> scoreFunction) {
             var bestText = "";
@@ -36,7 +36,7 @@ namespace Cryptopals.Core
 
             for (var singleByte = 0; singleByte < 256; singleByte++)
             {
-                var text = (this ^ (byte)singleByte).ToText();
+                var text = (this ^ singleByte).ToText();
                 var score = scoreFunction(text);
 
                 if (score <= bestScore) continue;
@@ -48,7 +48,6 @@ namespace Cryptopals.Core
             return Tuple.Create(bestScore, bestText);
         }
 
-        public static implicit operator byte[](Buffer buffer) => buffer._value;
 
 
         public static Buffer operator ^ (Buffer left, Buffer right) {
@@ -69,7 +68,9 @@ namespace Cryptopals.Core
 
             return new Buffer(newBytes);
         }
-        
+
+        public static Buffer operator ^(Buffer left, int right) => left ^ (byte)right;
+
         public static Buffer operator ^ (Buffer left, byte right) {
             var newBytes = new byte[left._value.Length];
             for (var index = 0; index < left._value.Length; index++)
@@ -78,16 +79,6 @@ namespace Cryptopals.Core
             }
             return new Buffer(newBytes);
         }
-
-        public IEnumerator<byte> GetEnumerator() {
-            var enumerable = _value.GetEnumerator();
-            while (enumerable.MoveNext())
-                yield return (byte)enumerable.Current;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
-
+       
     }
 }

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Cryptopals.Core;
 using NUnit.Framework;
 using Shouldly;
 using Buffer = Cryptopals.Core.Buffer;
 
 namespace Cryptopals.Challenges
-{ 
+{
     class Set001 {
-        string DataPath = @"C:\Users\c9952\OneDrive\Documents\GitHub\cryptopals\Crytopals\Cryptopals.Challenges";
-
         [Test]
         public void Challenge001() {
             var fromHex =
@@ -41,7 +37,7 @@ namespace Cryptopals.Challenges
 
         [Test]
         public void Challenge004() {
-            var lines = File.ReadAllLines(Path.Combine(DataPath, "Set001Challenge004.txt"));
+            var lines = File.ReadAllLines(@"C:\Users\c9952\OneDrive\Documents\GitHub\cryptopals\Crytopals\Cryptopals.Challenges\Set001Challenge004.txt");
 
             var bestMessage = "";
             var bestScore = 0;
@@ -66,44 +62,6 @@ namespace Cryptopals.Challenges
 
             asHex.ShouldBe("0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272" + 
                            "a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f");
-        }
-
-        [Test]
-        public void Challenge006() {
-            "this is a test".HammingDistance("wokka wokka!!!").ShouldBe(37);
-
-            var lines = File.ReadAllLines(Path.Combine(DataPath, "Set001Challenge006.txt"));
-            var messageBlock = lines.SelectMany(Buffer.FromBase64).ToArray();
-
-            var bestKeySize = 0;
-            var bestScore = 0;
-
-            for (var blocks = 0; blocks < 1; blocks++) {
-                for (var keySize = 2; keySize <= 40; keySize++)
-                {
-                    var bytesToCopy = keySize * blocks;
-
-                    var firstBlock = new byte[bytesToCopy];
-                    var secondBlock = new byte[bytesToCopy];
-
-                    Array.Copy(messageBlock, firstBlock, bytesToCopy);
-                    Array.Copy(messageBlock, bytesToCopy, secondBlock, 0, bytesToCopy);
-
-                    var firstBuffer = Buffer.FromByteArray(firstBlock);
-                    var secondBuffer = Buffer.FromByteArray(secondBlock);
-
-                    var score = firstBuffer.HammingDistance(secondBuffer) / keySize;
-
-                    if (score <= bestScore) continue;
-
-                    bestScore = score;
-                    bestKeySize = keySize;
-                }
-            }
-
-
-            
-
         }
     }
 }
