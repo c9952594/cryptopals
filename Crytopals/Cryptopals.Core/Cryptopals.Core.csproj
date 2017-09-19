@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Buffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

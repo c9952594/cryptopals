@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using Cryptopals.Core;
 using NUnit.Framework;
 using Shouldly;
 using Buffer = Cryptopals.Core.Buffer;
@@ -32,9 +32,8 @@ namespace Cryptopals.Challenges
 
         [Test]
         public void Challenge003() {
-            var buffer = Buffer.FromHex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b" +
-                                        "3736");
-            var scored = buffer.Score(text => text.Count(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
+            var buffer = Buffer.FromHex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736");
+            var scored = buffer.EnglishScore();
 
             scored.Text.ShouldBe("Cooking MC's like a pound of bacon");
         }
@@ -46,7 +45,7 @@ namespace Cryptopals.Challenges
             (int Score, string Text) bestScore = (0, "");
             
             foreach (var buffer in buffers) {
-                var scored = buffer.Score(text => text.Count(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
+                var scored = buffer.EnglishScore();
                 if (scored.Score <= bestScore.Score) continue;
                 bestScore = scored;
             }
@@ -67,6 +66,35 @@ namespace Cryptopals.Challenges
         [Test]
         public void Challenge006() {
             Buffer.FromText("this is a test").HammingDistance(Buffer.FromText("wokka wokka!!!")).ShouldBe(37);
+            
+            var lines = File.ReadAllLines(Path.Combine(_dataPath, "Set001Challenge006.txt"));
+            var buffer = new Buffer(lines.SelectMany(Buffer.FromBase64).ToArray());
+            
+            (int KeySize, double Score) best = (2, double.MaxValue);
+
+            for (var keysize = 2; keysize <= 40; keysize++)
+            {
+                var distances = new[] {
+                    buffer.GetBlock(keysize, 0).NormalisedHammingDistance(buffer.GetBlock(keysize, 1)),
+                    buffer.GetBlock(keysize, 2).NormalisedHammingDistance(buffer.GetBlock(keysize, 3)),
+                    buffer.GetBlock(keysize, 4).NormalisedHammingDistance(buffer.GetBlock(keysize, 5)),
+                    buffer.GetBlock(keysize, 6).NormalisedHammingDistance(buffer.GetBlock(keysize, 7)),
+                    buffer.GetBlock(keysize, 8).NormalisedHammingDistance(buffer.GetBlock(keysize, 9)),
+                    buffer.GetBlock(keysize, 10).NormalisedHammingDistance(buffer.GetBlock(keysize, 11)),
+                    buffer.GetBlock(keysize, 12).NormalisedHammingDistance(buffer.GetBlock(keysize, 13)),
+                    buffer.GetBlock(keysize, 14).NormalisedHammingDistance(buffer.GetBlock(keysize, 15)),
+                    buffer.GetBlock(keysize, 16).NormalisedHammingDistance(buffer.GetBlock(keysize, 17))
+                };
+
+                var score = distances.Average();
+                if (score >= best.Score) continue;
+
+                best = (keysize, score);
+            }
+            
+
+
+            Debugger.Break();
         }
     }
 }
