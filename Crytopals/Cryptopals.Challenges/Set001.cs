@@ -1,18 +1,32 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using NUnit.Framework;
 using Shouldly;
 using Buffer = Cryptopals.Core.Buffer;
 
 namespace Cryptopals.Challenges
-{ 
+{
+    class qwe : BinaryReader {
+        public qwe(Stream input) : base(input) { }
+        public qwe(Stream input, Encoding encoding) : base(input, encoding) { }
+        public qwe(Stream input, Encoding encoding, bool leaveOpen) : base(input, encoding, leaveOpen) { }
+    }
+
+    public class HexReader {
+        public HexReader(Stream text) {
+        }
+    }
+
     class Set001 {
         readonly string _dataPath = TestContext.CurrentContext.TestDirectory;
 
         [Test]
         public void Challenge001() {
-            var fromHex =Buffer.FromHex("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d");
+            var fromHex = Buffer.FromHex("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d");
 
             var toBase64 = fromHex.ToBase64();
 
@@ -42,7 +56,7 @@ namespace Cryptopals.Challenges
         public void Challenge004() {
             var buffers = File.ReadAllLines(Path.Combine(_dataPath, "Set001Challenge004.txt")).Select(Buffer.FromHex);
 
-            (int Score, string Text) bestScore = (0, "");
+            (int Score, byte Byte, string Text) bestScore = (0, 0, "");
             
             foreach (var buffer in buffers) {
                 var scored = buffer.EnglishScore();
@@ -64,37 +78,65 @@ namespace Cryptopals.Challenges
         }
 
         [Test]
-        public void Challenge006() {
+        public void Challenge006_HammingDistance()
+        {
             Buffer.FromText("this is a test").HammingDistance(Buffer.FromText("wokka wokka!!!")).ShouldBe(37);
-            
+        }
+
+        [Test]
+        public void Challenge006() {
             var lines = File.ReadAllLines(Path.Combine(_dataPath, "Set001Challenge006.txt"));
-            var buffer = new Buffer(lines.SelectMany(Buffer.FromBase64).ToArray());
+            var content = string.Join("", lines);
+            var buffer = Buffer.FromBase64(content);
             
-            (int KeySize, double Score) best = (2, double.MaxValue);
+            var likelihoods = 
+                Enumerable.Range(2, 40).Select(blocksize => new {
+                    BlockSize = blocksize,
+                    Likelihood = 
+                        Enumerable.Range(0, 10).Select(block => {
+                            var buffer1 = buffer.GetBlock(blocksize, block * 2);
+                            var buffer2 = buffer.GetBlock(blocksize, block * 2 + 1);
+                            return buffer1.NormalisedHammingDistance(buffer2);
+                        }).Average()
+                })
+                .OrderBy(m => m.Likelihood);
 
-            for (var keysize = 2; keysize <= 40; keysize++)
-            {
-                var distances = new[] {
-                    buffer.GetBlock(keysize, 0).NormalisedHammingDistance(buffer.GetBlock(keysize, 1)),
-                    buffer.GetBlock(keysize, 2).NormalisedHammingDistance(buffer.GetBlock(keysize, 3)),
-                    buffer.GetBlock(keysize, 4).NormalisedHammingDistance(buffer.GetBlock(keysize, 5)),
-                    buffer.GetBlock(keysize, 6).NormalisedHammingDistance(buffer.GetBlock(keysize, 7)),
-                    buffer.GetBlock(keysize, 8).NormalisedHammingDistance(buffer.GetBlock(keysize, 9)),
-                    buffer.GetBlock(keysize, 10).NormalisedHammingDistance(buffer.GetBlock(keysize, 11)),
-                    buffer.GetBlock(keysize, 12).NormalisedHammingDistance(buffer.GetBlock(keysize, 13)),
-                    buffer.GetBlock(keysize, 14).NormalisedHammingDistance(buffer.GetBlock(keysize, 15)),
-                    buffer.GetBlock(keysize, 16).NormalisedHammingDistance(buffer.GetBlock(keysize, 17))
-                };
 
-                var score = distances.Average();
-                if (score >= best.Score) continue;
+            var blockSize = likelihoods.First().BlockSize;
 
-                best = (keysize, score);
-            }
+            var transposed = buffer.Select((value, index) => new { Value = value, Index = index })
+                .GroupBy(x => x.Index % blockSize)
+                .Select(grp => grp.Select(x => x.Value).ToArray())
+                .Select(m => new Buffer(m))
+                .Select(m => m.EnglishScore())
+                .Select(score => Convert.ToChar(score.Byte))
+                .ToArray();
+
+            var key = new string(transposed);
+            var message = (buffer ^ key).ToText();
             
+            blockSize.ShouldBe(29);
+            key.ShouldBe("Terminator X: Bring the noise");
+            message.Split('\n')[0].ShouldBe("I'm back and I'm ringin' the bell ");
+        }
 
+        [Test]
+        public void Challenge007() {
+            var lines = File.ReadAllLines(Path.Combine(_dataPath, "Set001Challenge007.txt"));
+            var content = string.Join("", lines);
+            var buffer = Buffer.FromBase64(content);
 
-            Debugger.Break();
+            var outputBuffer = new byte[buffer.Length];
+
+            var aes = Aes.Create();
+            aes.Mode = CipherMode.ECB;
+            aes.BlockSize = 128;
+            aes.Key = Encoding.ASCII.GetBytes("YELLOW SUBMARINE");
+            aes.CreateDecryptor().TransformBlock(buffer, 0, buffer.Length, outputBuffer, 0);
+
+            var text = new Buffer(outputBuffer).ToText();
+
+            text.Split('\n')[0].ShouldBe("I'm back and I'm ringin' the bell ");
         }
     }
 }

@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Core", "Cryptopals.Core\Cryptopals.Core.csproj", "{8B4D3138-CC59-4EBF-BCA4-805325E65BA1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Test", "Cryptopals.Test\Cryptopals.Test.csproj", "{ADAE008B-330A-4DF9-813E-B56C2592C3B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptopals.Challenges", "Cryptopals.Challenges\Cryptopals.Challenges.csproj", "{1BEEFE23-B377-4022-9997-88596EAA40EC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ChallengesFS", "ChallengesFS\ChallengesFS.fsproj", "{E07545C2-DEB3-492F-8949-4AEB50C63092}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BEEFE23-B377-4022-9997-88596EAA40EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E07545C2-DEB3-492F-8949-4AEB50C63092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07545C2-DEB3-492F-8949-4AEB50C63092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07545C2-DEB3-492F-8949-4AEB50C63092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07545C2-DEB3-492F-8949-4AEB50C63092}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

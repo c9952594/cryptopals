@@ -18,7 +18,8 @@ namespace Cryptopals.Core
             _value = value;
             Length = value.Length;
         }
-        
+
+        public byte this[int index] => _value[index];
 
 
         public static Buffer FromHex(string hex) 
@@ -50,9 +51,9 @@ namespace Cryptopals.Core
 
 
 
-        public (int Score, string Text) EnglishScore()
+        public (int Score, byte Byte, string Text) EnglishScore()
         {
-            (int Score, string Text) best = (0, "");
+            (int Score, byte Byte, string Text) best = (0, 0, "");
             
             for (var singleByte = 0; singleByte < 256; singleByte++) {
                 var text = (this ^ (byte)singleByte).ToText();
@@ -60,7 +61,7 @@ namespace Cryptopals.Core
 
                 if (score <= best.Score) continue;
 
-                best = (score, text);
+                best = (score, (byte)singleByte, text);
             }
 
             return best;
