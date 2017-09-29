@@ -54,11 +54,22 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Score.fs" />
+    <Compile Include="Xor.fs" />
     <Compile Include="Base64.fs" />
     <Compile Include="Hex.fs" />
     <Compile Include="Text.fs" />
     <Compile Include="Set001.fs" />
     <Content Include="packages.config" />
+    <Content Include="Set001Challenge004.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Set001Challenge006.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Set001Challenge007.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
